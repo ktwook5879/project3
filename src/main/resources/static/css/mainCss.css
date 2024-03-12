@@ -1,0 +1,267 @@
+.selected-date {
+    background-color: lightblue; /* 선택된 날짜의 배경색을 변경 */
+}
+
+/* 일요일 날짜: 빨간색 */
+.fc-day-sun a {
+    color: red;
+}
+
+/* 토요일 날짜: 파란색 */
+.fc-day-sat a {
+    color: blue;
+}
+
+/* 평일 */
+.fc-day-mon a, .fc-day-tue a, .fc-day-wed a, .fc-day-thu a, .fc-day-fri a {
+    color: black !important; /* 평일 날짜 텍스트 색상 */
+}
+
+.fc-daygrid-day a,
+.fc-day-header a {
+    text-decoration: none !important;
+}
+
+.fc-col-header-cell-cushion {
+    text-decoration: none !important;
+}
+
+#calendar {
+    max-width:1100px;
+    max-height: 800px;
+    margin: 50px auto 50px 500px;
+    width: calc(100% - 500px);
+}
+.fc-event-time {
+    display: none;
+}
+
+#editModal .modal-footer #registerEventBtn{
+    border: 1px solid #090909;
+    background-color: white;
+    border-radius: 4px;
+    width: 100px;
+    height: 40px;
+    margin-right: 15px;
+}
+
+#editModal .modal-footer #deleteEventBtn{
+    border: 1px solid #e00909;
+    color: #e00909 ;
+    background-color: white;
+    border-radius: 4px;
+    width: 100px;
+    height: 40px;
+}
+
+#myModal .modal-footer #cancelButton{
+    border: 1px solid #bbb;
+    background-color: white;
+    border-radius: 4px;
+    width: 70px;
+    height: 40px;
+    margin-right: 15px;
+}
+
+#myModal .modal-footer #saveButton{
+    border: 1px solid #bbb;
+    background-color: #121313;
+    color: white;
+    border-radius: 4px;
+    width: 70px;
+    height: 40px;
+}
+
+/*회원등록 버튼*/
+#myModal .modal-body .addMember{
+    border: none;
+    background-color: white;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 30px;
+}
+
+/*예약정보 입력 모달 창 고객명 조회*/
+#myModal .modal-content .modal-body .salesBoxCustom{
+    margin-bottom: 30px;
+}
+#myModal .modal-content .modal-body .salesBoxCustom #userSales{
+    width: 200px;
+    text-align: center;
+    z-index: 2;
+}
+
+/* 예약 등록 시 modal창에서 회원 검색 후 받아온 데이터와 x 버튼 영역 시작*/
+.salesBoxCustom .salesUserValue {
+    display: none;
+    position: relative;
+    z-index: 1;
+    right: 200px;
+    /*visibility: hidden;*/
+}
+
+.salesBoxCustom .salesUserValue #modalUserValue {
+    width: 230px;
+    /*border-radius: 4px;*/
+    /*border: 1px solid #bbb;*/
+    text-align: center;
+}
+
+.salesBoxCustom .salesUserValue #btnDelUser {
+    position: relative;
+    border: none;
+    background-color: white;
+    color: black;
+    /*right: px;*/
+}
+
+/* 예약 등록 시 modal창에서 회원 검색 후 받아온 데이터와 x 버튼 영역 끝*/
+
+/*   예약 등록 시 고객명 끝*/
+
+/* 예약 등록 시 고객명 조회 modal 시작*/
+
+#searchUser {
+    height: 100%;
+}
+
+ #searchUser .close{
+    background-color: white;
+    border: none;
+}
+
+#searchUser .modal-body input {
+    width: 100%;
+}
+
+/* 예약등록 시 고객명 조회 modal 끝*/
+
+
+
+/*회원가입 모달 창 */
+#joinModal .join {
+    width: 100%;
+    height: auto;
+    /*justify-content: center;*/
+    /*align-content: center;*/
+    /*border: 1px solid #a8a4a4;*/
+}
+
+#joinModal .join-class {
+    /*margin-top: 10px;*/
+    /*margin-bottom: 10px;*/
+    /*padding: 15px 0px 15px 0px;*/
+    height: 80px;
+    vertical-align: middle;
+
+}
+
+#joinModal  .join-class-gender{
+    /*padding: 15px 0px 15px 0px;*/
+    height: 60px;
+    vertical-align: middle;
+}
+
+#joinModal .join-class-userId{
+    /*position: relative;*/
+    /*padding: 15px 0px 15px 0px;*/
+    height: 80px;
+    vertical-align: middle;
+}
+
+#joinModal .join-class-pwd{
+    /*position: relative;*/
+    /*padding: 15px 0px 15px 0px;*/
+    height: 60px;
+    vertical-align: middle;
+}
+
+
+
+#joinModal .join div label {
+    /*font-weight: bold;*/
+    margin-right: 10px;
+    width: 100px;
+    text-align: right;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+
+#joinModal .modal-body .join #userName,
+#joinModal .modal-body .join #userId,
+#joinModal .modal-body .join #userPwd1,
+#joinModal .modal-body .join #userPwd2,
+#joinModal .modal-body .join #userPhone {
+    width: 70%;
+    border: 1px solid #a8a4a4;
+    border-radius: 5px;
+    padding: 10px 12px;
+    font-size: 14px;
+    /*position: relative;*/
+}
+
+#joinModal  .modal-body .join input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+}
+
+/*#joinModal  .modal-body .join input[type=number] {*/
+/*    width: 335px;*/
+/*}*/
+
+#joinModal .modal-content .modal-body .join-class-gender span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px
+}
+
+#joinModal  #genderF {
+    margin-left: 50px;
+}
+
+#joinModal .modal-body .join .join-class #pwdMsg,
+#joinModal .modal-body .join .join-class-userId #userIdMsg {
+    height: auto;
+    visibility: hidden;
+}
+
+#joinModal .modal-body .join .join-class-userId #userIdChk{
+    color: #f1f8f8;
+    background-color: gray;
+    /*height: auto;*/
+    /*width: auto;*/
+    border: 1px solid black;
+    border-radius: 3px;
+    /*padding: 5px 6px;*/
+    position: absolute;
+    right: 50px;
+    top:240px;
+    font-size: 13px;
+    width: 100px;
+    height: 35px;
+}
+
+#joinModal .modal-footer #join{
+    border: 1px solid #bbb;
+    background-color: #121313;
+    color: white;
+    border-radius: 4px;
+    width: 70px;
+    height: 40px;
+    margin-right: 15px;
+}
+
+#joinModal .modal-footer #cancel{
+    border: 1px solid #bbb;
+    background-color: white;
+    border-radius: 4px;
+    width: 70px;
+    height: 40px;
+}

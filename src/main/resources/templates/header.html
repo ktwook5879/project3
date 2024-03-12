@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="headerNavbar">
+<head>
+    <meta charset="UTF-8">
+    <title>header</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+
+    <!--header의 스타일 설정-->
+    <style>
+        #header{
+            margin: 20px 0;
+            height: 100px;
+        }
+
+        #header .clfx {
+            display: flex;
+            justify-content: center; /* 수평 가운데 정렬 */
+            align-items: center; /* 수직 가운데 정렬 */
+        }
+
+        #header .clfx .inner {
+            display: flex;
+            justify-content: space-between; /* 내부 요소들 간의 간격을 최대화 */
+            width: 100%; /* .inner 가 100%의 너비를 차지하도록 설정 */
+            max-width: 1200px; /* 필요에 따라 최대 너비 설정 */
+            padding: 0 20px; /* 필요에 따라 좌우 패딩 설정 */
+            box-sizing: border-box; /* 패딩과 테두리를 포함하도록 box-sizing 설정 */
+        }
+
+        #header .clfx h1.title {
+            margin: 0;
+            display: flex;
+            align-items: center; /* 수직 가운데 정렬 */
+        }
+
+        #header .clfx .util {
+            margin-left: auto; /* 자동으로 왼쪽 여백을 늘려 오른쪽으로 이동 */
+        }
+
+        #header .clfx .util a {
+            text-decoration: none; /* 밑줄 제거 */
+            color: #bbb; /* 원하는 색상으로 변경 (예: #3498db) */
+            font-weight: bold;
+            margin: 0 10px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="header" class="sub">
+    <div id="top" class="clfx">
+        <div class="inner clfx">
+            <h1 class="clfx title">
+                <a href="/main">
+                    <img src="/image/logo.png" style="width: 150px;height: 100px;" alt="logo">
+                </a>
+            </h1>
+
+            <div class="util" th:if="${session.userId} == null">
+                <a href="/member/login" class="account">LOGIN</a>
+                <a href="/reservation/reservationPage" class="account">예약하기</a>
+            </div>
+
+            <!-- admin계정으로 로그인 시 보이는 UI-->
+            <div class="util" th:if="${session.adminYn == 'Y'}">
+                <a href="/member/logout" class="account" methods="post" onclick="alert('로그아웃 되었습니다')">로그아웃</a>
+                <a href="/reservation" class="account">나의 미용실</a>
+            </div>
+
+            <!-- Thymeleaf 조건문을 사용하여 일반회원 로그인 시 메뉴 표시 -->
+            <div class="util" th:if="${session.adminYn == 'N'}">
+                <a href="/member/logout" class="account" methods="post" onclick="alert('로그아웃 되었습니다')">로그아웃</a>
+                <a href="/member/memberEdit" class="account">마이페이지</a>
+                <a href="/reservation/reservationPage" class="account">예약하기</a>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">예약확인</a>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">나의 예약</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-sm">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">예약날짜</th>
+                                        <th scope="col">시간</th>
+                                        <th scope="col">시술내용</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- reservationList가 비어있을 때 "조회된 내용이 없습니다" 메시지를 표시 -->
+                                    <tr th:if="${#lists.isEmpty(reservationList)}">
+                                        <td colspan="4" style="text-align: center;">조회된 내용이 없습니다.</td>
+                                    </tr>
+                                    <!-- reservationList가 비어있지 않은 경우 -->
+                                    <tr th:each="reservation : ${reservationList}" style="vertical-align: middle;">
+                                        <td th:text="${reservation.date}" style="vertical-align: middle;"></td>
+                                        <td th:text="${reservation.startTime}" style="vertical-align: middle;"></td>
+                                        <td th:text="${#strings.substring(reservation.content, 0, reservation.content.lastIndexOf('('))}" style="vertical-align: middle;"></td>
+                                        <td>
+                                            <form th:action="@{/main/delete}" method="post"
+                                                  onsubmit="return confirmCancelReservation('${reservation.idx}');">
+                                                <input type="hidden" name="idx" th:value="${reservation.idx}"/>
+                                                <button type="submit" class="btn btn-link text-danger"
+                                                        style="text-decoration: none; font-weight: bold;">취소
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <h5>지난 예약</h5>
+                                <table class="table table-sm table-primary">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">예약날짜</th>
+                                        <th scope="col">시간</th>
+                                        <th scope="col">시술내용</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- pastReservations가 비어있을 때 "조회된 내용이 없습니다" 메시지를 표시 -->
+                                    <tr th:if="${#lists.isEmpty(pastReservations)}">
+                                        <td colspan="3" style="text-align: center;">조회된 내용이 없습니다.</td>
+                                    </tr>
+                                    <!-- pastReservations가 비어있지 않은 경우 -->
+                                    <tr th:each="pastReservation : ${pastReservations}">
+                                        <td th:text="${pastReservation.date}"></td>
+                                        <td th:text="${pastReservation.startTime}"></td>
+                                        <td th:text="${#strings.substring(pastReservation.content, 0, pastReservation.content.lastIndexOf('('))}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <script th:inline="javascript">
+                                    function confirmCancelReservation(idx) {
+                                        var confirmed = confirm('예약을 취소하시겠습니까?');
+                                        if (confirmed) {
+                                            alert('예약이 취소되었습니다.');
+                                        }
+                                        return confirmed;
+                                    }
+                                </script>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</th:block>
+</html>

@@ -1,0 +1,132 @@
+
+#header {
+    margin: 20px 0;
+    height: 100px;
+}
+
+#header .clfx {
+    display: flex;
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+}
+
+#header .clfx .inner {
+    display: flex;
+    justify-content: space-between; /* 내부 요소들 간의 간격을 최대화 */
+    width: 100%; /* .inner 가 100%의 너비를 차지하도록 설정 */
+    max-width: 1200px; /* 필요에 따라 최대 너비 설정 */
+    padding: 0 20px; /* 필요에 따라 좌우 패딩 설정 */
+    box-sizing: border-box; /* 패딩과 테두리를 포함하도록 box-sizing 설정 */
+}
+
+#header .clfx h1.title {
+    margin: 0;
+    display: flex;
+    align-items: center; /* 수직 가운데 정렬 */
+}
+
+#header .clfx .util {
+    margin-left: auto; /* 자동으로 왼쪽 여백을 늘려 오른쪽으로 이동 */
+}
+
+#header .clfx .util a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: #3498db; /* 원하는 색상으로 변경 (예: #3498db) */
+    font-weight: bold;
+    margin: 0 10px;
+}
+
+.stitle {
+    text-align: center;
+    padding: 20px 0px;
+    background: rgb(24, 24, 24);
+}
+
+.stitle strong {
+    display: block;
+    font-size: 35px;
+    color: rgb(255, 255, 255);
+    font-weight: 700;
+    line-height: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 30px 0px;
+    background: rgb(24, 24, 24);
+}
+
+.reservation {
+    margin: 0 0 30px 0;
+    height: auto;
+    min-height: 100%;
+    padding-bottom: 30px;
+    margin-bottom: 50px;
+    /*max-width: 1200px;*/
+}
+
+.salonInfo {
+    margin-left: 350px; /* 왼쪽 마진 값 설정 */
+    margin-right: 350px; /* 오른쪽 마진 값 설정 */
+}
+
+.btn.btn-primary {
+    background-color: transparent; /* 배경색 제거 */
+    border: 2px solid #6fea6f; /* 테두리선 추가 (원하는 색상으로 변경) */
+    color: #6fea6f; /* 텍스트 색상 변경 (원하는 색상으로 변경) */
+    font-weight: bold;
+    width: 200px;
+    transition: background-color 0.4s ease;
+}
+
+.btn.btn-primary.custom-btn:active {
+    background-color: #6fea6f; /* 클릭 시의 색상으로 변경 */
+    border-color: #6fea6f; /* 클릭 시의 테두리 색상으로 변경 */
+    color: white; /* 클릭 시의 텍스트 색상으로 변경 */
+}
+
+#footer {
+    width: 100%;
+    border-top: 1px solid rgb(201, 201, 201);
+}
+
+#footer .footer-inner {
+    padding: 35px 10px 0px 10px;
+    /*position: relative;*/
+    /*justify-content: space-between;*/
+}
+
+
+#footer.new2021 #foot_menu1 li {
+    display: table-cell;
+    font-size: 12px;
+    color: rgb(168, 168, 168);
+    list-style: none;
+    /*margin-bottom: 5px;*/
+}
+
+#footer.new2021 #foot_menu3 li {
+    font-size: 12px;
+    color: rgb(168, 168, 168);
+    list-style: none;
+}
+
+#footer.new2021 #foot_menu1 li::after{
+    content: "|";
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#footer h1 {
+    float: left;
+    margin-left: 50px;
+}
+
+#footer .foot-menu{
+    float: right;
+    margin-right: 50px;
+}
+
+#footer .foot-menu #foot_menu3 p{
+    text-align: right;
+
+
+}

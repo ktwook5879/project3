@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            /*전화번호 형식 확인*/
+            //  휴대폰 정규식 설정
+            var regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+
+            $("#userPhone").on("blur", function () {
+                if (!regPhone.test($(this).val())) {
+                    return alert("전화번호 형식이 맞지 않습니다.");
+                } else {
+                    return true;
+                }
+            });
+
+            <!--         find 폼 제출-->
+            $("#findUserPwd").on("click", function () {
+                // 폼 객체
+                const frm = document.findUserPwd;
+
+
+                // 입력여부 검사
+                if (!frm.userId.value) {
+                    alert("아이디를 입력해주세요");
+                    return false;
+                }
+
+                if (!frm.userName.value) {
+                    alert("이름을 입력해주세요");
+                    return false;
+                }
+
+                if (!frm.userPhone.value) {
+                    alert("휴대폰 번호를 입력해주세요");
+                    return false;
+                }
+
+            });
+        });
+
+    </script>
+
+
+    <style>
+        .stitle {
+            text-align: center;
+            padding: 20px 0px;
+            background: rgb(24, 24, 24);
+        }
+
+        .stitle strong {
+            display: block;
+            font-size: 35px;
+            color: rgb(255, 255, 255);
+            font-weight: 700;
+            line-height: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 30px 0px;
+            background: rgb(24, 24, 24);
+        }
+
+        .findForm {
+            padding: 20px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            width: auto;
+            /*height: 300px;*/
+            display: grid;
+            justify-content: center;
+            align-content: center;
+            /*border: 1px solid #a8a4a4;*/
+        }
+
+        .findForm .findFormInput{
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .login div {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        #userId,
+        #userName,
+        #userPhone {
+            width: 335px;
+            margin-bottom: 10px;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+
+        }
+
+        input {
+            border: 1px solid #a8a4a4;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 14px;
+
+        }
+
+        label {
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        #findUserPwd {
+            margin-top: 20px;
+            margin-bottom: 5px;
+            background-color: black;
+            border-color: black;
+            color: white;
+            height: 45px;
+        }
+
+        .findResult {
+            text-align: center;
+            height: 50px;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        #goLogin {
+            background-color: transparent;
+            border: 1px solid #000; /* 테두리 색상을 검은색(#000)으로 설정 */
+            color: #000; /* 버튼 텍스트 색상 */
+            cursor: pointer;
+        }
+
+
+    </style>
+</head>
+<body>
+<div th:replace="~{header :: headerNavbar}"></div>
+
+<div class="stitle">
+    <strong>비밀번호 찾기</strong>
+</div>
+
+
+<div class="container mt-5" style="height: auto;min-height: 100%;padding-bottom: 30px; margin-bottom: 50px">
+
+
+    <form action="/member/find/pwd" method="post" name="findUserPwd">
+        <div class="findForm">
+            <div class="findFormInput">
+                <div>
+                    <input type="text" id="userId" name="userId" placeholder="가입하셨던 아이디를 입력해주세요.">
+                </div>
+
+                <div>
+                    <input type="text" id="userName" name="userName" placeholder="가입하셨던 이름을 입력해주세요.">
+                </div>
+
+                <div>
+                    <input type="number" id="userPhone" name="userPhone" placeholder="가입하셨던 전화번호를 입력해주세요.">
+                </div>
+            </div>
+            <input type="submit" id="findUserPwd" value="비밀번호 찾기">
+
+            <input type="button" id="goLogin" value="로그인"
+                   onclick="window.location.href='/member/login'">
+
+            <div class="findResult">
+                <div th:if="${check == 0}">
+                    <p>조회된 결과가 없습니다.</p>
+                </div>
+                <div th:unless="${check == 0}">
+                    <p th:if="${check != null}"
+                       th:text="|${check.getUserName()}님의 임시비밀번호는 ${check.getUserPwd1()} 입니다.| "></p>
+                    <p th:if="${check != null}">로그인 후 비밀번호를 변경해주세요.</p>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+<div th:replace="~{footer :: footerNavbar}"></div>
+</body>
+</html>

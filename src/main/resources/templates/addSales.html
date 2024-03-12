@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>매출등록</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <link href="/css/addSalesCss.css" rel="stylesheet" type="text/css"/>
+    <script src="/js/addSalesJs.js"></script>
+
+</head>
+<body>
+
+<!--사이드 바 넣기-->
+<th:block th:replace="side :: sideFragment"></th:block>
+
+<div class="container mt-5" id="addSales">
+    <div class="d-flex">
+        <span class="bar"></span>
+        <h2><strong>매출등록</strong></h2>
+    </div>
+
+    <form action="/sale/insert" method="post" id="addSalesFrm" name="addSalesFrm">
+        <input type="text" name="UserIdx" id="selectedUserIdx" hidden>
+        <div class="salesBox container">
+            <!--날짜, 시간-->
+            <div class="dateAndTime">
+                <div class="saleDate">
+                    <div style="margin-right: 10px; font-weight: bold; font-size: 20px">날짜</div>
+                    <div>
+                        <input type="date" name="paymentDay" id="saleDate">
+                    </div>
+                </div>
+
+                <div class="saleTime">
+
+                    <div style="margin-right: 10px; font-weight: bold; font-size:20px">시간</div>
+
+                    <div class="saleTimeHour">
+                        <select name="saleTimeHour" id="saleTimeHour" required>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                        </select>
+                        <span style="font-size: 16px">시</span>
+                    </div>
+
+
+                    <div class="saleTimeMinute">
+                        <select name="saleTimeMinute" id="saleTimeMinute" required>
+                            <option value="00">00</option>
+                            <option value="30">30</option>
+                        </select>
+                        <span style="font-size: 16px">분</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--            고객명 or 비회원-->
+            <div class="salesBoxCustom">
+                <div class="title">고객명</div>
+                <div class="salesOurCustom">
+                    <input type="text" name="name" id="userName" onkeydown="goKeyDown(event);" autofocus>
+                </div>
+
+                <!--                고객검색 조회 모달창-->
+                <div class="modal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">회원조회</h5>
+
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">
+                                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+</svg>
+                                    </span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <!--                                여기 고객조회 결과값-->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--                비회원 선택 시 위 selectedCustom disabled -->
+                <div class="salesCustom">
+                    <input type="checkbox" value="비회원" id="chkCustom" class="chkCustom">
+                    <label>비회원</label>
+                </div>
+
+                <!--                고객명 검색 후 회원값 받아오기 비회원 div는 없애기 -->
+                <div class="salesUserValue">
+                    <input type="text" value="" id="modalUserValue" readonly name="modalUserValue">
+
+                    <button type="button" id="btnDelUser" class="btnDelUser">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-x"
+                             viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+
+            <!--        시술선택    -->
+            <div class="salesBoxTreat">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="salesBoxTreatDiv">
+                                <div class="title">시술선택</div>
+                                <!--                성별선택-->
+                                <div>
+                                    <select name="genderSelect" id="genderSelect">
+                                        <option value="" selected disabled hidden>선택</option>
+                                        <option value="여성">여성</option>
+                                        <option value="남성">남성</option>
+                                    </select>
+                                </div>
+                                <!--                성별에 따라 저장된 시술 불러오기-->
+                                <div>
+                                    <select name="selectContent" id="selectContent">
+                                        <option value="" selected disabled hidden>선택</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <!--                    thead에서 성별, 시술선택하면 아래에 리스트업-->
+                    <tbody>
+                    <tr>
+                        <td>
+                            <table class="insideTable" id="serviceList">
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--            최종결제(현금 or 카드 체크) &  최종결제금액-->
+            <div class="salesBoxPayment">
+                <table class="salesTable">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="salesBoxPaymentDiv">
+                                <div class="title">결제방법</div>
+
+                            </div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <ul>
+                                <li>
+                                    <div class="salesPaymentCash">
+                                        <div class="checkPayment">
+                                            <input type="radio" name="paymentMethod" value="cash" onclick="handlePaymentSelection(this)" id="cash">
+                                            <label for="cash">현금</label>
+                                        </div>
+
+                                        <div class="pricePayment">
+                                            <input type="number" name="payment" id="salesCash"><span>원</span>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="salesPaymentCredit">
+                                        <div class="checkPayment">
+                                            <input type="radio" name="paymentMethod" value="credit" onclick="handlePaymentSelection(this)" id="credit">
+                                            <label for="credit">카드</label>
+                                        </div>
+
+                                        <div class="pricePayment">
+                                            <input type="number" name="payment" id="salesCredit"><span>원</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--            메모-->
+
+            <div class="salesBoxMemo">
+                <div class="title">메모</div>
+                <div>
+                    <textarea id="memo" rows="5" name="memo"></textarea>
+                </div>
+            </div>
+
+            <!--            매출등록버튼-->
+            <div class="btnSalesDiv">
+                <button type="submit" id="btnSales" class="btnSales">매출등록</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+</div>
+</body>
+</html>

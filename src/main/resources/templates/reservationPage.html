@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>예약페이지</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/js/calendarJs.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/reservationPageCss.css">
+</head>
+<body>
+<div id="sessionName" th:text="${session.userName}" style="display: none;"></div>
+<div id="sessionPhone" th:text="${session.userPhone}" style="display: none;"></div>
+<div id="sessionUserIdx" th:text="${session.userIdx}" style="display: none;"></div>
+
+<!--header-->
+<div th:replace="~{header :: headerNavbar}"></div>
+
+<!--reservation-->
+<div class="reservation">
+    <div class="stitle">
+        <strong>RESERVATION</strong>
+    </div>
+    <br>
+    <div class="salonInfo">
+        <table cellpadding="20" cellspacing="20">
+            <tr>
+                <th>
+                    <salonIntroduce>
+                        <p>부산시 남구 유엔로169번길 67 4층<br>
+                            대연역 1번 출구에서 369m<br>
+                            0507-6591-0656</p>
+                        <p>월 08:00 - 19:00<br>
+                            화 08:00 - 19:00<br>
+                            수 08:00 - 19:00<br>
+                            목 08:00 - 19:00<br>
+                            금 08:00 - 19:00<br>
+                            토 08:00 - 19:00<br>
+                            일 08:00 - 19:00</p>
+                        <p id="reservationDateParagraphs">헤어스파, 1인미용실, 주차, 두피클리닉, 무선 인터넷</p>
+                        <br>
+                    </salonIntroduce>
+                </th>
+                <th style="padding-left: 200px;">
+                    <salonLocation>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d685.9483471282518!2d129.09415640537298!3d35.133205253374875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3568ecf59fb8bcd9%3A0x3ef666b395d3960!2z67aA7IKw6rSR7Jet7IucIOuCqOq1rCDsnKDsl5TroZwxNjnrsojquLggNjc!5e0!3m2!1sko!2skr!4v1709535751351!5m2!1sko!2skr"
+                                width="550" height="350" style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </salonLocation>
+                </th>
+            </tr>
+        </table>
+
+        <!--        예약하기 모달창-->
+        <!--        첫번째 모달-->
+        <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+             tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- 모달창 날짜 선택 -->
+                            <div class="reservation-date">
+                                <iframe id="moonCalendarFrame" src="/reservation/calendar" width="100%"
+                                        height="500px" style="overflow: auto;"></iframe>
+                            </div>
+
+                            <!--                    모달창 시간 선택-->
+                            <div class="reservation-time">
+                                <iframe id="reservation-time" src="/reservation/timeTable" width="100%" height="150%" frameborder="0"></iframe>
+                            </div>
+
+                        <!--                        시술 카테고리 선택-->
+                        <div class="select-service">
+                            <select id="categorySelect" class="form-select" aria-label="Default select example">
+                                <option selected>시술을 선택해 주세요</option>
+                                <option value="(여성)커트 / 20000원 / 30분">(여성)커트 / 20000원 / 30분</option>
+                            </select>
+                        </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" id="saveButton">저장</button>
+                                <button type="reset" class="btn btn-dangerous" data-bs-dismiss="modal">취소</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--        두번째 모달-->
+        <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+             tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="height: auto">
+                        <p id="reservation-name">예약자명 : 이기호</p>
+                        <!--                        선택한 날짜-->
+                        <p id="reservation-date"></p>
+                        <!--                        선택한 시간-->
+                        <p id="selected-time"></p>
+                        <p id="selected-content"></p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-bs-target="#exampleModalToggle3"
+                                data-bs-toggle="modal">네
+                        </button>
+                        <button class="btn btn-danger" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">아니요
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--        세번째 모달-->
+        <div class="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel3"
+             tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>예약되었습니다</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="exampleModalToggle3CloseBtn" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.reload()">닫기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--        예약하기 버튼-->
+        <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">예 약</button>
+    </div>
+</div>
+
+<!--날짜 및 시간을 불러오기 위한 스크립트-->
+<script src="/js/reservationPageJs.js"></script>
+</body>
+
+<!--footer-->
+<div th:replace="~{footer :: footerNavbar}"></div>
+
+</html>

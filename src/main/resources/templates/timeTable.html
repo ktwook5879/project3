@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>예약시간</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        /* 선택된 라디오 버튼 스타일링 */
+        input[type="radio"]:checked + label {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        /* 일반적인 라디오 버튼 스타일링 */
+        input[type="radio"] {
+            display: none; /* 기본 라디오 버튼 숨기기 */
+        }
+
+        label {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 4px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        label:hover {
+            background-color: #f1f1f1;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+
+    <script>
+        function saveSelectedTime() {
+            // 선택한 시간의 value값을 가져와 seletedTime에 저장
+            let selectedTime = $('input[name="time_info"]:checked').val();
+            // 저장된 selectedTime을 내부저장소인 localStorage에 저장
+            localStorage.setItem('selectedTime', selectedTime);
+            // 시간 변경사항이 있을 경우 다른 html에 변경된 시간 넘기기
+            localStorage.setItem('selectedTimeUpdated', 'true');
+        }
+
+        function parseTime(timeString) {
+            var timeParts = timeString.split(":");
+            var hours = parseInt(timeParts[0], 10);
+            var minutes = parseInt(timeParts[1], 10);
+            var seconds = parseInt(timeParts[2], 10);
+            return new Date(0, 0, 0, hours, minutes, seconds);
+        }
+
+        function formatTime(time) {
+            var hours = time.getHours().toString().padStart(2, '0');
+            var minutes = time.getMinutes().toString().padStart(2, '0');
+            var seconds = time.getSeconds().toString().padStart(2, '0');
+            return hours + ':' + minutes + ':' + seconds;
+        }
+
+        let reservationDate = localStorage.getItem('reservationDate');
+
+        $(document).ready(function () {
+            // 페이지 로드 시 실행되는 함수
+            hideReservedTimes(reservationDate);
+
+            // 선택한 시간 변경 시 호출되는 함수
+            $('input[name="time_info"]').change(saveSelectedTime);
+
+            // 페이지 로드 시 초기화
+            localStorage.removeItem('selectedTime');
+            localStorage.removeItem('selectedTimeUpdated');
+        });
+
+        // 전역 범위에 함수 정의
+        function hideReservedTimes(reservationDate) {
+            console.log("iframe" + reservationDate)
+            $.ajax({
+                type: 'GET',
+                url: '/reservation/getReservedTimes',
+                data: {reservationDate: reservationDate},
+                success: function (response) {
+                    response.forEach(function (reservation) {
+                        var startTime = reservation.startTime;
+                        var endTime = reservation.endTime;
+
+                        var currentTime = parseTime(startTime);
+                        var endTimeObj = parseTime(endTime);
+
+                        while (currentTime < endTimeObj) {
+                            var formattedTime = formatTime(currentTime);
+                            $('input[value="' + formattedTime + '"]').addClass('hidden');
+                            $('label[for="time_' + formattedTime + '"]').addClass('hidden');
+                            currentTime.setMinutes(currentTime.getMinutes() + 30); // 30분 간격으로 증가
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching reserved times:', error);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<div>
+    <input type="radio" id="time_08:00:00" name="time_info" value="08:00:00">
+    <label for="time_08:00:00">08:00</label>
+    <input type="radio" id="time_08:30:00" name="time_info" value="08:30:00">
+    <label for="time_08:30:00">08:30</label>
+    <input type="radio" id="time_09:00:00" name="time_info" value="09:00:00">
+    <label for="time_09:00:00">09:00</label>
+    <input type="radio" id="time_09:30:00" name="time_info" value="09:30:00">
+    <label for="time_09:30:00">09:30</label>
+    <input type="radio" id="time_10:00:00" name="time_info" value="10:00:00">
+    <label for="time_10:00:00">10:00</label>
+    <input type="radio" id="time_10:30:00" name="time_info" value="10:30:00">
+    <label for="time_10:30:00">10:30</label>
+    <input type="radio" id="time_11:00:00" name="time_info" value="11:00:00">
+    <label for="time_11:00:00">11:00</label>
+    <input type="radio" id="time_11:30:00" name="time_info" value="11:30:00">
+    <label for="time_11:30:00">11:30</label>
+    <input type="radio" id="time_12:00:00" name="time_info" value="12:00:00">
+    <label for="time_12:00:00">12:00</label>
+    <input type="radio" id="time_12:30:00" name="time_info" value="12:30:00">
+    <label for="time_12:30:00">12:30</label>
+    <input type="radio" id="time_13:00:00" name="time_info" value="13:00:00">
+    <label for="time_13:00:00">13:00</label>
+    <input type="radio" id="time_13:30:00" name="time_info" value="13:30:00">
+    <label for="time_13:30:00">13:30</label>
+    <input type="radio" id="time_14:00:00" name="time_info" value="14:00:00">
+    <label for="time_14:00:00">14:00</label>
+    <input type="radio" id="time_14:30:00" name="time_info" value="14:30:00">
+    <label for="time_14:30:00">14:30</label>
+    <input type="radio" id="time_15:00:00" name="time_info" value="15:00:00">
+    <label for="time_15:00:00">15:00</label>
+    <input type="radio" id="time_15:30:00" name="time_info" value="15:30:00">
+    <label for="time_15:30:00">15:30</label>
+    <input type="radio" id="time_16:00:00" name="time_info" value="16:00:00">
+    <label for="time_16:00:00">16:00</label>
+    <input type="radio" id="time_16:30:00" name="time_info" value="16:30:00">
+    <label for="time_16:30:00">16:30</label>
+    <input type="radio" id="time_17:00:00" name="time_info" value="17:00:00">
+    <label for="time_17:00:00">17:00</label>
+    <input type="radio" id="time_17:30:00" name="time_info" value="17:30:00">
+    <label for="time_17:30:00">17:30</label>
+    <input type="radio" id="time_18:00:00" name="time_info" value="18:00:00">
+    <label for="time_18:00:00">18:00</label>
+    <input type="radio" id="time_18:30:00" name="time_info" value="18:30:00">
+    <label for="time_18:30:00">18:30</label>
+    <input type="radio" id="time_19:00:00" name="time_info" value="19:00:00">
+    <label for="time_19:00:00">19:00</label>
+    <input type="radio" id="time_19:30:00" name="time_info" value="19:30:00" style="visibility: hidden">
+    <label for="time_19:30:00" style="visibility: hidden">19:30</label>
+</div>
+</body>
+</html>

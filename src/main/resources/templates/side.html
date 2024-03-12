@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="sideFragment">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+              crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+                crossorigin="anonymous"></script>
+
+        <style>
+
+            #profile {
+                text-align: center;
+
+            }
+
+            #mySidenav {
+                position: fixed;
+                width: 250px;
+            }
+
+            .sidenav {
+                height: 100%;
+                width: 0;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                background-color: #FCEDAA;
+                overflow-x: hidden;
+                /*transition: 0.5s;*/
+                padding-top: 30px;
+            }
+
+            #mySidenav #logout {
+                border: none;
+                background-color: #FCEDAA;
+                font-weight: bold;
+            }
+
+            /*드롭다운 메뉴 바 설정*/
+
+            .sideCate {
+                position: relative;
+                display: inline-block;
+                user-select: none;
+            }
+
+            /*홈, 회원, 우리샵 드롭다운 메뉴바*/
+            .sideNavHome,
+            .sideNavUser,
+            .sideNavShop {
+                /*display: inline-flex;*/
+                align-items: center;
+                /*cursor: pointer;*/
+                font-size: 20px;
+                font-weight: bold;
+                width: 100%;
+                margin-left: 10px;
+                margin-top: 25px;
+                margin-bottom: 15px;
+            }
+
+            #mySidenav .sideCate svg {
+                align-items: end;
+                justify-content: end;
+                margin-right: 5px;
+                margin-bottom: 5px;
+
+            }
+
+            /*홈, 회원, 우리샵 드롭다운 리스트*/
+            .sideNavHomeRez,
+            .sideNavUserList,
+            .sideNavShopList {
+                /*position: absolute;*/
+                display: block;
+                margin-top: 5px;
+                width: 157px;
+                /*height: auto;*/
+                /*background: linear-gradient(to bottom, #4a66ff, #b636cd);*/
+                /*box-shadow: 4px 4px 10px #c5b0b0;*/
+                animation: fade-in 1s ease;
+
+            }
+
+            .sideNavHomeRez li,
+            .sideNavUserList li,
+            .sideNavShopList li {
+                list-style: none;
+                cursor: pointer;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            li a {
+                color: black;
+                text-decoration-line: none;
+            }
+        </style>
+
+        <script>
+            $(document).ready(function () {
+
+                $("#logout").on('click', function () {
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/member/logout",
+                        success: function (data) {
+                            document.location.href = "/main";
+                        }
+                    })
+                })
+
+
+            });
+        </script>
+
+    </head>
+    <body>
+
+    <!--사이드바-->
+    <div id="mySidenav" class="sidenav" th:unless="${session.userName} == null">
+
+        <!--            프로필 부분-->
+        <div id="profile" class="row-3">
+            <h1>
+                <a href="/main">
+                    <img src="/image/logo.png" style="width: 150px;height: 100px; margin-bottom: 10px" alt="logo">
+                </a>
+            </h1>
+            <p th:text="|${session.userName}님 접속하셨습니다.|"></p>
+            <button type="button" id="logout">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                     class="bi bi-box-arrow-right" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                          d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+                    <path fill-rule="evenodd"
+                          d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+                </svg>
+                로그아웃
+            </button>
+        </div>
+
+        <div class="sideCate">
+            <!--홈 드롭다운 메뉴바-->
+
+            <div class="sideNavHome">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                     class="bi bi-calendar2-check" viewBox="0 0 16 16">
+                    <path d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/>
+                    <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5z"/>
+                </svg>
+                <span class="sideNavTitle">홈</span>
+
+            </div>
+
+            <!--    홈 드롭다운 시 나타날 메뉴-->
+            <div class="sideNavHomeRez" id="sideNavHomeRez">
+                <ul class="sideRez" id="sideRez">
+                    <li class="sideRezCal"><a href="/reservation">예약 캘린더</a></li>
+                    <!--                <li class="sideRezList"><a href="">예약 리스트</a></li>-->
+                </ul>
+            </div>
+
+            <!--고객관리 드롭다운 메뉴바-->
+            <div class="sideNavUser">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                     class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+                    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5"/>
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                </svg>
+                <span class="sideNavTitle">고객관리</span>
+
+            </div>
+
+            <!--        고객관리 드롭다운 시 나타낼 메뉴-->
+            <div class="sideNavUserList" id="sideNavUserList">
+                <ul class="sideUser">
+                    <li class="sideUserListSub"><a href="/member/memberInfo">고객관리</a></li>
+                </ul>
+            </div>
+
+            <!--우리샵관리 드롭다운 메뉴바-->
+            <div class="sideNavShop">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                     class="bi bi-shop-window" viewBox="0 0 16 16">
+                    <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.37 2.37 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0M1.5 8.5A.5.5 0 0 1 2 9v6h12V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5m2 .5a.5.5 0 0 1 .5.5V13h8V9.5a.5.5 0 0 1 1 0V13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5a.5.5 0 0 1 .5-.5"/>
+                </svg>
+                <span class="sideNavTitle">우리샵관리</span>
+
+            </div>
+
+            <!--        우리샵 관리 드롭다운 시 나타낼 메뉴-->
+            <div class="sideNavShopList" id="sideNavShopList">
+                <ul class="sideShop">
+                    <li class="sideTreat"><a href="/treat/treatList">시술메뉴</a></li>
+                    <li class="sideSales"><a href="/sale/salesPut">매출등록</a></li>
+                    <li class="sideSales"><a href="/sale/saleManagement">매출관리</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    </body>
+</th:block>
+</html>

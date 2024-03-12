@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+
+    <style>
+
+        .bar {
+            width: 5px;
+            height: 31px;
+            background-color: #37454a;
+            margin: 5px;
+            margin-right: 10px;
+        }
+
+        #memberInfo {
+            width: calc(100% - 350px);
+            margin-left: 350px;
+        }
+
+
+        .search {
+            position: relative;
+            left: 500px;
+            width: 300px;
+            margin-bottom: 50px;
+
+        }
+
+        .search input {
+            width: 100%;
+            border: 2px solid black;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 14px;
+
+        }
+
+        .searchBtn {
+            /*background: url("https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png") no-repeat;*/
+            position: absolute;
+            width: 17px;
+            height: auto;
+            top: 13px;
+            right: 12px;
+            margin: 0;
+            border: 0px;
+            background: none;
+        }
+
+        #search {
+            position: absolute;
+            width: 20px;
+            /*top: 2px;*/
+            right: 6px;
+            margin: 0;
+        }
+
+        .memberCard {
+            margin-top: 15px;
+        }
+
+        .memberInfo {
+            width: 100%;
+            border: 1px solid #bbb;
+            position: relative;
+            padding-top: 25px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            box-shadow: #dad9d9 0px 3px 10px;
+            border-radius: 4px;
+        }
+
+        .memberInfo .card-memList {
+            list-style: none;
+        }
+
+        .cardMemName {
+            width: 100%;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .cardMemName span {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .memberInfo .cardMemDate {
+            position: absolute;
+            top: 5px;
+            right: 20px;
+            text-align: end;
+        }
+
+        .memberInfo .cardMemDate ul li {
+            margin-top: 10px;
+            list-style: none;
+        }
+
+        .memberInfo .info-area {
+            margin-top: 20px;
+        }
+
+        .memberInfo .info-area ul li.first,
+        .memberInfo .info-area ul li.second {
+            display: table-cell;
+            position: relative;
+            padding: 0 25px;
+            border-right: 1px solid #bbb;
+        }
+
+        .memberInfo .info-area ul li.third {
+            display: table-cell;
+            position: relative;
+            padding: 0 25px;
+            /*border-right: 1px solid #d9e6e8;*/
+        }
+
+        .memberInfo .info-area ul li.first,
+        .memberInfo .info-area ul li.third {
+            width: 300px;
+            vertical-align: top;
+            list-style: none;
+
+        }
+
+        .memberInfo .info-area ul li.second {
+            width: 400px;
+            list-style: none;
+        }
+
+        .memberInfo .info-area ul li dt {
+            font-size: 16px;
+        }
+
+        .memberInfo .info-area ul li dd.contents {
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+
+    </style>
+
+    <script>
+
+<!--        매출 형식 변환-->
+        function formatNumberWithCommas(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        $(document).ready(function() {
+
+            $('#memberInfo .memberCard .searchBtn').on('click',function (){
+
+                var keyword = $('#memberInfo .memberCard #keyword').val();
+
+               // alert(keyword);
+
+                $.ajax({
+                    url:'/member/memberSearch',
+                    method : 'GET',
+                    data : {keyword : keyword},
+                    success : function (data){
+                        // alert("성공");
+                        var container = $('#memberInfo .container');
+                        container.empty();
+                        // 데이터를 HTML로 변환하는 함수
+                        function generateHTML(data) {
+                            var html = '';
+                            for (var i = 0; i < data.length; i++) {
+                                html += '<div class="memberInfo">';
+                                html += '<ul id="memList1">';
+                                html += '<li class="card-memList">';
+                                html += '<div class="cardMemName">';
+                                html += '<a href="/member/memberDetail?userIdx=' + data[i][9] + '">';
+                                html += '<span id="userName">' + data[i][0] + '</span>';
+                                html += '<span>(' + data[i][3] + ')</span>';
+                                html += '</a>';
+                                html += '</div>';
+                                html += '<div class="cardMemDate">';
+                                html += '<ul>';
+                                html += '<li>';
+                                html += '<span class="createDate">회원등록일 : </span>';
+                                html += '<span class="contents">' + formatDate(data[i][6]) + '</span>';
+                                html += '</li>';
+                                html += '<li>';
+                                html += '<span class="visitDate">최근방문일 : </span>';
+                                html += '<span class="visitSpan">' + (data[i][10] ? data[i][10] : '-')  + '</span>';
+                                html += '</li>';
+                                html += '</ul>';
+                                html += '</div>';
+                                html += '<div class="info-area">';
+                                html += '<ul>';
+                                html += '<li class="first">';
+                                html += '<dt>휴대전화</dt>';
+                                html += '<dd class="contents">';
+                                html += '<span>' + data[i][2] + '</span>';
+                                html += '</dd>';
+                                html += '</li>';
+                                html += '<li class="second">';
+                                html += '<dt>메모</dt>';
+                                html += '<dd class="contents">';
+                                html += '<span>' + (data[i][8] ? data[i][8] : '메모 없음') + '</span>';
+                                html += '</dd>';
+                                html += '</li>';
+                                html += '<li class="third">';
+                                html += '<dt>총 매출</dt>';
+                                html += '<dd class="contents">';
+                                html += '<span>' + (data[i][11] ? formatNumberWithCommas(data[i][11]) +'원' : '매출 없음') + '</span>';
+                                html += '</dd>';
+                                html += '</li>';
+                                html += '</ul>';
+                                html += '</div>';
+                                html += '</li>';
+                                html += '</ul>';
+                                html += '</div>';
+                            }
+                            return html;
+                        }
+
+                        // HTML 생성 및 추가
+                        var generatedHTML = generateHTML(data);
+                        container.append(generatedHTML);
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error adding reservation:', error);
+                    }
+                })
+            });
+
+
+            // 날짜형식 변경 함수
+                function formatDate(originalDate) {
+                    var date = new Date(originalDate);
+                    var formattedDate = date.getFullYear() + '-' +
+                        ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+                        ('0' + date.getDate()).slice(-2);
+                    return formattedDate;
+                }
+
+                function memberInfoData() {
+                    $.ajax({
+                        url: '/member/memberInfoData', // 데이터를 가져올 엔드포인트 URL을 입력하세요.
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            var container = $('#memberInfo .container');
+                            container.empty();
+                            // 데이터를 HTML로 변환하는 함수
+                            function generateHTML(data) {
+                                var html = '';
+                                for (var i = 0; i < data.length; i++) {
+                                    html += '<div class="memberInfo">';
+                                    html += '<ul id="memList1">';
+                                    html += '<li class="card-memList">';
+                                    html += '<div class="cardMemName">';
+                                    html += '<a href="/member/memberDetail?userIdx=' + data[i][9] + '">';
+                                    html += '<span id="userName">' + data[i][0] + '</span>';
+                                    html += '<span>(' + data[i][3] + ')</span>';
+                                    html += '</a>';
+                                    html += '</div>';
+                                    html += '<div class="cardMemDate">';
+                                    html += '<ul>';
+                                    html += '<li>';
+                                    html += '<span class="createDate">회원등록일 : </span>';
+                                    html += '<span class="contents">' + formatDate(data[i][6]) + '</span>';
+                                    html += '</li>';
+                                    html += '<li>';
+                                    html += '<span class="visitDate">최근방문일 : </span>';
+                                    html += '<span class="visitSpan">' + (data[i][10] ? data[i][10] : '-')  + '</span>';
+                                    html += '</li>';
+                                    html += '</ul>';
+                                    html += '</div>';
+                                    html += '<div class="info-area">';
+                                    html += '<ul>';
+                                    html += '<li class="first">';
+                                    html += '<dt>휴대전화</dt>';
+                                    html += '<dd class="contents">';
+                                    html += '<span>' + data[i][2] + '</span>';
+                                    html += '</dd>';
+                                    html += '</li>';
+                                    html += '<li class="second">';
+                                    html += '<dt>메모</dt>';
+                                    html += '<dd class="contents">';
+                                    html += '<span>' + (data[i][8] ? data[i][8] : '메모 없음') + '</span>';
+                                    html += '</dd>';
+                                    html += '</li>';
+                                    html += '<li class="third">';
+                                    html += '<dt>총 매출</dt>';
+                                    html += '<dd class="contents">';
+                                    html += '<span>' + (data[i][11] ? formatNumberWithCommas(data[i][11]) +'원' : '매출 없음') + '</span>';
+                                    html += '</dd>';
+                                    html += '</li>';
+                                    html += '</ul>';
+                                    html += '</div>';
+                                    html += '</li>';
+                                    html += '</ul>';
+                                    html += '</div>';
+                                }
+                                return html;
+                            }
+
+                            // HTML 생성 및 추가
+                            var generatedHTML = generateHTML(data);
+                            container.append(generatedHTML);
+                        },
+                        error: function (error) {
+                            console.error('Error fetching data:', error);
+                        }
+                    });
+                }
+
+                memberInfoData();
+            });
+    </script>
+
+</head>
+<body>
+
+<!--사이드 바 넣기-->
+<th:block th:replace="side :: sideFragment"></th:block>
+
+<div class="container mt-5" id="memberInfo">
+
+    <div class="d-flex">
+        <span class="bar"></span>
+        <h3><strong>고객관리</strong></h3>
+    </div>
+
+    <div class="memberCard">
+<!--        <form action="/member/memberSearch" method="get">-->
+            <div class="search">
+                <input type="text" placeholder="검색어 입력" id="keyword" name="keyword">
+                <button type="submit" class="searchBtn">
+                    <img id=search src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png">
+                </button>
+            </div>
+<!--        </form>-->
+
+        <!--        기본 고객 관리화면-->
+        <div class="container">
+            <div class="memberInfo">
+                <ul id="memList1">
+                    <li class="card-memList">
+                        <div class="cardMemName">
+                            <a href="/member/memberDetail(userIdx=${item.userIdx})">
+<!--                                <input type="hidden" id="userIdx" th:attr="value=${item.userIdx}">-->
+                                <span id="userName" > 유저네임</span>
+
+                                <span>(아이디)</span>
+                            </a>
+                        </div>
+                        <div class="cardMemDate">
+                            <ul>
+                                <li>
+                                    <span class="createDate">회원등록일 : </span>
+                                    <span class="contents">2024.03.07</span>
+                                </li>
+                                <li>
+                                    <span class="visitDate">최근방문일 : </span>
+                                   <span class="visitSpan">2024.03.07</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="info-area">
+                            <ul>
+                                <li class="first">
+                                    <dt>휴대전화</dt>
+                                    <dd class="contents">
+                                        <span>010-1234-5678</span>
+                                    </dd>
+                                </li>
+                                <li class="second">
+                                    <dt>메모</dt>
+                                    <dd class="contents">
+                                        <span >메모</span>
+                                    </dd>
+                                </li>
+                                <li class="third">
+                                    <dt>총 매출</dt>
+                                    <dd class="contents">
+                                        <span >202000</span>
+                                        </dd>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+                </ul>
+
+
+            </div>
+        </div>
+
+        <!--    고객 관리화면에서 회원 검색 후 띄워야할 화면 -->
+        <!--        <div class="container" th:if="${#lists.size(memberSearch)} > 0 " th:each="item : ${memberSearch}">   -->
+        <!--            <div class="container" th:if="${#lists.size(memberSearch)} > 0 " th:each="item : ${memberSearch}">-->
+        <!--            <div class="memberInfo">-->
+        <!--                <ul id="memList2">-->
+        <!--                    <li class="card-memList">-->
+        <!--                        <div class="cardMemName">-->
+        <!--                            <a th:href="@{/member/memberDetail(userIdx=${item.userIdx})}">-->
+        <!--                                <span th:text="${item.userName}"> </span>-->
+
+        <!--                                <span th:text="|(${item.userId})|"></span>-->
+        <!--                            </a>-->
+        <!--                        </div>-->
+        <!--                        <div class="cardMemDate">-->
+        <!--                            <ul>-->
+        <!--                                <li>-->
+        <!--                                    <span class="createDate">회원등록일 : </span>-->
+        <!--                                    <span class="contents"-->
+        <!--                                          th:text="${#temporals.format(item.createDate , 'yyyy.MM.dd')}"></span>-->
+        <!--                                </li>-->
+        <!--                                <li>-->
+        <!--                                    <span class="visitDate">최근방문일 : </span>-->
+        <!--                                    <span class="contents">-</span>-->
+        <!--                                </li>-->
+        <!--                            </ul>-->
+        <!--                        </div>-->
+
+        <!--                        <div class="info-area">-->
+        <!--                            <ul>-->
+        <!--                                <li class="first">-->
+        <!--                                    <dt>휴대전화</dt>-->
+        <!--                                    <dd class="contents">-->
+        <!--                                        <span th:text="${item.userPhone}">010-1234-5678</span>-->
+        <!--                                    </dd>-->
+        <!--                                </li>-->
+        <!--                                <li class="second">-->
+        <!--                                    <dt>메모</dt>-->
+        <!--                                    <dd class="contents">-->
+        <!--                                        <span>회원1메모1 이건 데이터 없음</span>-->
+        <!--                                    </dd>-->
+        <!--                                </li>-->
+        <!--                                <li class="third">-->
+        <!--                                    <dt>총 매출</dt>-->
+        <!--                                    <dd class="contents">-->
+        <!--                                        <span>20,000원 매출처리 후 받아오는 곳</span>-->
+        <!--                                    </dd>-->
+        <!--                                </li>-->
+        <!--                            </ul>-->
+        <!--                        </div>-->
+        <!--                    </li>-->
+        <!--                </ul>-->
+        <!--            </div>-->
+        <!--        </div>-->
+    </div>
+</div>
+</body>
+</html>

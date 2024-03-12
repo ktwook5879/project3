@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+
+    <style>
+
+        #memberDetail {
+            width: calc(100% - 350px);
+            margin-left: 350px;
+        }
+
+        .userProfile-Card {
+            float: left;
+            width: 20%;
+        }
+
+        .userProfile {
+            border: 3px solid #bbb;
+            /*width: 260px;*/
+            height: auto;
+        }
+
+        .userProfile .namePhone {
+            padding-top: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+
+        .userProfile #name,
+        .userProfile #phone {
+            font-size: 25px;
+            font-weight: bold;
+
+        }
+
+        .userProfile div span {
+            font-size: 15px;
+        }
+
+        .userProfile .modUser {
+            width: 100%;
+            border: 1px solid #bbb;
+            margin-top: 10px;
+            background-color: #bbb;
+            height: 40px;
+            font-weight: bold;
+
+        }
+
+        .userRezTreat {
+            /*width: 640px;*/
+            margin-left: 20px;
+            float: left;
+            width: 70%;
+        }
+
+        .userTreat-Card {
+            /*border: 1px solid #bbb;*/
+            margin-bottom: 25px;
+        }
+
+        .userTreat-Card .title,
+        .userRez-Card .title {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-size: 20px;
+            margin-left: 20px;
+        }
+
+        .userTreat-Card .countTreat{
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        .table {
+
+        }
+
+        .table td,
+        .table th,
+        .table {
+            text-align: center;
+        }
+
+        .userRezTreat .table tfoot td{
+            line-height: 10px;
+        }
+        .userRezTreat .table #moreList{
+            width: 100%;
+            border:none;
+            background-color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+
+
+    </style>
+
+    <script>
+
+        $(document).ready(function () {
+            $("#modUser").on("click", function () {
+
+                var userMemo = document.querySelector("#userMemo").value;
+                var userIdx = document.querySelector("#userIdx").innerText;
+
+                // console.log(userIdx);
+
+                $.ajax({
+                    type: "post",
+                    url: "/member/editMemo",
+                    data: {"userMemo": userMemo, "userIdx": userIdx},
+                    success: function (data) {
+                        console.log(data);
+
+                        if (data == "회원 정보가 수정되었습니다.")
+                            alert(data);
+                    },
+                    error: function (req, status, err) {
+                        console.log(req);
+                    }
+                });
+            });
+        });
+
+    </script>
+</head>
+<body>
+
+<!--사이드 바 넣기-->
+<th:block th:replace="side :: sideFragment"></th:block>
+
+<div class="container mt-5" id="memberDetail">
+
+    <div class="userProfile-Card" th:each="detail : ${detail}">
+        <div class="userProfile">
+            <div class="namePhone">
+                <span id="name" th:text="${detail.getUserName()}"></span>
+                <br>
+                <span id="phone" th:text="${detail.getUserPhone()}"></span>
+            </div>
+
+            <div class="idx" style="margin-bottom: 10px">
+                <span style="display:inline-block; width: 100px; text-align: center">고객번호 </span>
+                <span id="userIdx" th:text="${detail.getUserIdx()}"
+                      style="display:inline-block; width: 140px; text-align: center"></span>
+            </div>
+
+            <div class="id" style="margin-bottom: 10px">
+                <span style="display:inline-block; width: 100px; text-align: center">아이디</span>
+                <span th:text="${detail.getUserId()}"
+                      style="display:inline-block; width: 140px; text-align: center"></span>
+            </div>
+
+            <div class="gender" style="margin-bottom: 10px">
+                <span style="display:inline-block; width: 100px; text-align: center">성별</span>
+                <span th:text="${detail.getGender()}"
+                      style="display:inline-block; width: 140px; text-align: center"></span>
+            </div>
+            <div class="createDate" style="margin-bottom: 10px">
+                <span style="display:inline-block; width: 100px; text-align: center">회원등록일</span>
+                <span th:text="${#temporals.format(detail.createDate , 'yyyy년 MM월 dd일')}"
+                      style="display:inline-block; width: 140px; text-align: center"></span>
+            </div>
+
+            <div class="memo" style="margin-bottom: 10px">
+                <p style="display:inline-block; width: 100px; text-align: center">메모</p>
+                <textarea id="userMemo" rows="5" style="margin-left: 15px; width: 90%; border:1px solid #bbb"
+                          th:text="${detail.getUserMemo()}"></textarea>
+            </div>
+
+            <button type="button" id="modUser" class="modUser">수정</button>
+        </div>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            var userIdx = document.querySelector("#userIdx").innerText;
+
+            treatView(userIdx,0,2);
+
+
+
+            $(document).on("click", ".userRezTreat .table #moreList", function () {
+                var startIndex = $(".table-group-divider .treatData").length;
+
+                // console.log(startIndex);
+                treatView(userIdx, startIndex, 2);
+
+
+            })
+
+        })
+
+        <!--        매출 형식 변환-->
+        function formatNumberWithCommas(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function treatView(userIdx , startIndex, count) {
+
+            $.ajax({
+                url: "/member/memberTreatDetail",
+                type: "GET",
+                data: {userIdx: userIdx},
+                success: function (data) {
+                    var tbody = $(".userRezTreat .table .table-group-divider");
+
+                    var countTreat =  $(".userRezTreat .countTreat");
+
+                    countTreat.text("총 " + data.length + "건");
+
+                    if (data.length > 0) {
+
+                        // for (var i = startIndex; i < startIndex + count && i < data.length; i++) {
+                            for (var i = startIndex; i < startIndex + count && i < data.length; i++) {
+                            var element =
+                                `
+                                <tr class="treatData">
+                                    <td>${data[i].idx}</td>
+                                    <td>${data[i].content}</td>
+                                    <td>${formatNumberWithCommas(data[i].payment)}원</td>
+                                    <td>${data[i].memo}</td>
+                                    <td>${data[i].paymentDay}</td>
+                                </tr>
+                              `;
+                            tbody.append(element);
+                        }
+                        if(startIndex >= data.length){
+                            $(".table-group-divider #moreList").hide();
+                            alert("더 이상 조회된 결과가 없습니다.");
+                        }
+
+                    } else {
+                        var element =
+                            `
+                                <tr>
+                                    <td colspan="5">조회된 결과가 없습니다.</td>
+                                </tr>
+                              `;
+                        tbody.append(element);
+
+                        $(".userRezTreat tfoot").hide();
+                    }
+                },
+                error: function () {
+                    alert("통신 중 오류가 발생했습니다.");
+                }
+
+
+            });
+        };
+    </script>
+
+    <div class="userRezTreat">
+        <div class="userTreat-Card">
+            <div class="title">
+                <span style="font-weight: bold; font-size: 20px">시술 내역</span>
+                <span class="countTreat"></span>
+            </div>
+            <table class="table table-hover">
+                <colgroup>
+                    <col style="width:10%">
+                    <col style="width:40%">
+                    <col style="width:15%">
+                    <col style="width:20%">
+                    <col style="width:15%">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th scope="col">번호</th>
+                    <th scope="col">시술명</th>
+                    <th scope="col">시술금액</th>
+                    <th scope="col">메모</th>
+                    <th scope="col">날짜</th>
+                </tr>
+                </thead>
+
+                <tbody class="table-group-divider">
+
+                </tbody>
+
+                <tfoot>
+                <tr>
+                    <td colspan="5">
+                        <button type="button" id="moreList" >더 보기</button>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>

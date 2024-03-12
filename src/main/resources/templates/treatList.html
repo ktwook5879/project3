@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <style>
+
+        #treat-container{
+            width: calc(100% - 350px);
+            margin-left:350px;
+        }
+
+        .bar {
+            width: 5px;
+            height: 31px;
+            background-color: #37454a;
+            margin: 5px;
+            margin-right: 10px;
+        }
+
+        .treatment {
+            /*border: 1px solid #bbb;*/
+            border-radius: 8px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            box-shadow: #dad9d9 0px 3px 10px;
+            padding: 20px 20px 20px 24px;
+            width: 800px;
+            flex-direction: column;
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+
+        #treatMen,
+        #treatWoman {
+            font-size: 20px;
+        }
+
+        .treatCate li {
+            list-style: none;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        .treatCate {
+            margin: 15px;
+
+        }
+
+        .treatCate a {
+            text-decoration-line: none;
+            color: black;
+        }
+
+        .treatCate .d-flex {
+            /*border: 1px solid #bbb;*/
+            border-radius: 8px;
+            padding: 15px 0px 0px 0px;
+            width: 100%;
+            font-size: 14px;
+            background-color: rgb(249, 249, 251);
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            margin-bottom: 20px;
+
+
+        }
+
+        .treatCate .treatName,
+        .treatCate .treatTime,
+        .treatCate .treatAmount {
+            width: 33%;
+        }
+
+        .treatCate .treatName {
+            text-align: left;
+            margin-left: 10px;
+        }
+
+        .treatCate .treatTime {
+            text-align: center;
+        }
+
+        .treatCate .treatAmount {
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        .btn-treatWoman,
+        .btn-treatMen {
+            /*border: none;*/
+            background-color: rgb(255, 255, 255);
+            border-radius: 8px;
+            border: 1px solid #bbb;
+            width: 100%;
+            padding: 10px 20px;
+
+        }
+    </style>
+
+</head>
+<body class="treatListBody">
+
+<!--사이드 바 넣기-->
+<th:block th:replace="~{side :: sideFragment}"></th:block>
+
+<div class="container mt-5" id='treat-container'>
+    <div class="d-flex">
+        <span class="bar"></span>
+        <h2><strong>시술메뉴</strong></h2>
+    </div>
+
+    <div class="treatment">
+        <div class="title">
+            <p id="treatWoman"><strong>여성</strong></p>
+        </div>
+
+
+        <div class="treatCate">
+            <ul>
+                <li th:each="item : ${treatList}" th:if="${item.getGender() =='여성'}">
+                    <a href="/treat/treatList/treatEdit?treatIdx=" th:attrappend="href=${item.getTreatIdx()}">
+                        <div class="d-flex">
+                            <p class="treatName" th:text="${item.getTreatName()}"></p>
+                            <p class="treatTime" th:text="|${item.getTreatTimeHour() == '00' ? '' : item.getTreatTimeHour() + '시간'} ${item.getTreatTimeMinute() == '00' ? '' : item.getTreatTimeMinute() + '분'}|"></p>
+                            <p class="treatAmount" th:text="|${item.getTreatAmount()}원|"></p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <form action="/treat/treatList/treatWrite" method="get">
+            <input type="hidden" name="gender" value="여성">
+            <button type="submit" class="btn-treatWoman" id="btn-treatWoman">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                     class="bi bi-plus"
+                     viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                </svg>
+            </button>
+        </form>
+
+    </div>
+
+    <div class="treatment">
+        <div class="title">
+            <p id="treatMen"><strong>남성</strong></p>
+        </div>
+
+        <div class="treatCate">
+            <ul>
+                <li th:each="item : ${treatList}" th:if="${item.getGender() =='남성'}">
+                    <a href="/treat/treatList/treatEdit?treatIdx=" th:attrappend="href=${item.getTreatIdx()}">
+                        <div class="d-flex">
+                            <p class="treatName" th:text="${item.getTreatName()}"></p>
+                            <p class="treatTime" th:text="|${item.getTreatTimeHour() == '00' ? '' : item.getTreatTimeHour() + '시간'} ${item.getTreatTimeMinute() == '00' ? '' : item.getTreatTimeMinute() + '분'}|"></p>
+                            <p class="treatAmount" th:text="|${item.getTreatAmount()}원|"></p>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <form action="/treat/treatList/treatWrite" method="get">
+            <input type="hidden" name="gender" value="남성">
+            <button type="submit" class="btn-treatMen" id="btn-treatMan">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus"
+                     viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                </svg>
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

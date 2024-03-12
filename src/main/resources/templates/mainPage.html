@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SALON DE MOON 메인페이지</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+
+    </script>
+
+<!--    main의 내용 사이즈 스타일 설정-->
+    <style>
+        .stitle {
+            text-align: center;
+            padding: 15px 0px;
+            background: rgb(24, 24, 24);
+            margin-bottom: 30px;
+        }
+
+
+        .stitle strong {
+            display: block;
+            font-size: 35px;
+            color: rgb(255, 255, 255);
+            font-weight: 700;
+            line-height: 30px;
+            margin-top:10px;
+            margin-bottom: 10px;
+            text-align: center;
+            padding: 5px 0px;
+            background: rgb(24, 24, 24);
+        }
+
+        .stitle p{
+            display: block;
+            font-size: 18px;
+            color: rgb(255, 255, 255);
+            line-height: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 5px 0px;
+            background: rgb(24, 24, 24);
+        }
+
+        .list_style {
+            display: flex; /* 부모 요소를 플렉스 컨테이너로 설정하여 자식 요소를 한 줄에 표시 */
+            flex-wrap: wrap; /* 필요한 경우 자식 요소를 여러 줄로 감싸도록 설정 */
+            justify-content: space-between; /* 자식 요소 간 간격을 최대로 설정하여 정렬 */
+        }
+
+        .list_style li {
+            width: 24%; /* 각 항목이 컨테이너 너비의 24%를 차지하도록 설정 (4개가 한 줄에 딱 맞도록) */
+            box-sizing: border-box;
+            padding: 10px;
+            margin-bottom: 15px; /* 각 항목 아래에 간격을 주기 위해 추가 */
+        }
+
+        .list_style li img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+        </style>
+
+<!--    main 전체 사이즈 스타일 설정-->
+    <style>
+        .inner.clfx {
+            margin-left: 350px;
+            margin-right: 350px;
+        }
+
+
+        .list_style {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .list_style li {
+            width: 24%;
+            box-sizing: border-box;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+
+        .list_style li img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+
+</head>
+<body>
+<!--header-->
+<div th:replace="~{header :: headerNavbar}"></div>
+
+<div style="height: auto;min-height: 100%;padding-bottom: 30px; margin-bottom: 50px">
+
+<div class="stitle">
+    <strong>STYLE</strong>
+    <p>SALON DE MOON이 소개하는 2024 헤어 트렌드</p>
+</div>
+
+<!--main-->
+<div class="inner clfx">
+    <div id="content">
+        <ul class="list_style">
+            <li>
+                <a href="javascript:;" class="lite_box_trigger1 fancy-pop" rel="gallery_1">
+                    <div class="img"><img
+                            src="https://www.parkjun.com:443/park/data/file/style/thumb-747816649_95bCm1vz_11EC9B94_ED948CEBA088EC9DB4_1_675x.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>원랭스컷 l 매트 브라운</strong>
+                    <p>약간의 j컬로 비니를 썼을 때 더 귀여운 얼굴 라인으로 보이기 위해 앞머리 포인트를 준 과하지 않은 컬의 헤어스타일</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger2 fancy-pop" rel="gallery_2">
+                    <div class="img"><img
+                            src="https://www.parkjun.com/park/data/file/hair/thumb-747816649_P95zXAc3_re_0428_EBB7B0ED8BB0EB9EA91176_600x600.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>댄디 가르마컷</strong>
+                    <p>물결 웨이브로 귀엽고 세련된 느낌을 주고 부분 하이라이트로 컬러감을 돋보이게 하고 앞머리 볼륨을 물결펌에 어우러지게 넣어준 헤어스타일</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger3 fancy-pop" rel="gallery_3">
+                    <div class="img"><img
+                            src="https://www.parkjun.com:443/park/data/file/style/thumb-747816649_8vROGX32_11EC9B94_EBB2A0EC9DB4ECA781_2_675x.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>원랭스컷 l 매트 브라운</strong>
+                    <p>매직 셋팅 C컬 펌으로 회사원 출근길에 어울리는 깔끔한 헤어스타일</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger4 fancy-pop" rel="gallery_4">
+                    <div class="img"><img
+                            src="https://www.parkjun.com/park/data/file/hair/thumb-747816649_XriGF2Ct_5_600x600.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>ash violet & part perm</strong>
+                    <p>단발머리에 CS컬 펌으로 적당히 포인트를 주고 매트브라운 컬러의 베이스에 포인트 부분 탈색을 더해 시크한 느낌을 준 후 사이드 뱅으로 얼굴선을 감싼 헤어스타일</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger5 fancy-pop" rel="gallery_5">
+                    <div class="img"><img
+                            src="https://www.parkjun.com/park/data/file/hair/thumb-747816649_jABR4K91_re_0428_EBB7B0ED8BB0EB9EA91098_600x600.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>투블럭 가일컷</strong>
+                    <p>힙하고 유니크한 스타일에 어울리는 트위스트 헤어 스타일링에 컬러 밴딩으로 포인트를 주어 발랄하고 활동적인 느낌을 주는 디자인</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger6 fancy-pop" rel="gallery_6">
+                    <div class="img"><img
+                            src="https://www.parkjun.com:443/park/data/file/style/thumb-747816649_sQ6UWGjz_10EC9B94_EB9FACEBB88C_2_675x.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>원랭스컷 l 레드브라운</strong>
+                    <p>원렝스 단발의 무거운 느낌을 질감 처리와 태슬펌으로 가벼운 느낌을 주고 시스루 앞머리 포인트로 러블리함을 강조해 주는 헤어스타일</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger7 fancy-pop" rel="gallery_7">
+                    <div class="img"><img
+                            src="https://www.parkjun.com/park/data/file/hair/thumb-32217410_NrZvuRBd_EBB095ECA480EBB7B0ED8BB0EB9EA9_EBB680EC82B0EB8F99EB9E98EBA994EAB080EBA788ED8AB8ECA090_ED959CEC8898EBA78C_EB9494EC9E90EC9DB4EB8488_ECB694ECB29C_ED97A4EC96B4EC8AA4ED8380EC9DBC_1_600x600.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>남자 투블럭컷</strong>
+                    <p>뿌리 볼륨 펌과 C컬펌을 주어 볼륨과 웨이브로 얼굴선을 더욱 부드럽게 만들어 주는 바쁜 일상 속 쉬운 손질의 헤어스타일</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger8 fancy-pop" rel="gallery_8">
+                    <div class="img"><img
+                            src="https://www.parkjun.com:443/park/data/file/style/thumb-747816649_sLE1jiWe_10EC9B94_EBB2A0EC9DB4ECA781_1_675x.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>원랭스컷 l 레드브라운</strong>
+                    <p>원렝스 컷트와 시스루 뱅 포인트로 얼굴선을 부드럽게 만들어 주고 단발이 주는 깔끔함과 레드브라운 컬러의 조화로 도도하면서 매력적인 인상을 주는 헤어스타일</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger9 fancy-pop" rel="gallery_9">
+                    <div class="img"><img
+                            src="https://www.parkjun.com:443/park/data/file/style/thumb-747816649_jcnWGsLv_8EC9B94_ED948CEBA088EC9DB4_2_675x.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>레이어드컷 l 애쉬 베이지, 딥블루</strong>
+                    <p>활동적인 스포츠 상황에 맞게 자연스러운 C컬 펌을 주어 레이어드컷의 형태로 풍성한 헤어스타일</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger10 fancy-pop" rel="gallery_10">
+                    <div class="img"><img
+                            src="https://www.parkjun.com/park/data/file/hair/thumb-621919306_KthYBsL2_EBB095ECA480EBB7B0ED8BB0EB9EA9_EBB680EC82B0EAB09CEAB888ECA090_EBB3B4EC9D80_EB9494EC9E90EC9DB4EB8488_ECB694ECB29C_ED97A4EC96B4EC8AA4ED8380EC9DBC_1_600x600.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>울프컷</strong>
+                    <p>데이트 때의 설레는 마음을 표현한 히피 스타일로 사랑스러움을 강조하기 위해 반하이 업스타일과 잔머리 포인트를 준 헤어스타일</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger11 fancy-pop" rel="gallery_11">
+                    <div class="img"><img
+                            src="https://www.parkjun.com:443/park/data/file/style/thumb-747816649_j4FdsgVv_8EC9B94_EBB2A0EC9DB4ECA781_2_675x.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>레이어드컷 l 애쉬 베이지, 딥블루</strong>
+                    <p>출근의 활동성을 고려해서 집게핀으로 가볍게 스타일링하고 염색에 제약이 있는 직장인들도 분위기 전환을 할 수 있는 투톤 헤어스타일</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger12 fancy-pop" rel="gallery_12">
+                    <div class="img"><img
+                            src="https://www.parkjun.com/park/data/file/hair/thumb-621919306_42u1zvxO_EBB095ECA480EBB7B0ED8BB0EB9EA9_EAB095EB82A8ECA090_EB8BA8EC9AB0_EB9494EC9E90EC9DB4EB8488_ECB694ECB29C_ED97A4EC96B4EC8AA4ED8380EC9DBC_1_600x600.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>남자 가르마컷, 매트브라운</strong>
+                    <p>굵은 웨이브로 분위기 있는 스타일을 연출하고 앞머리 라인 포인트로 얼굴의 광대 라인 부분을 커버한 헤어스타일</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger13 fancy-pop" rel="gallery_13">
+                    <div class="img"><img
+                            src="https://www.parkjun.com:443/park/data/file/style/thumb-747816649_iAxsCWzM_7EC9B94_ED948CEBA088EC9DB4_2_675x.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>레이어드컷 l 코랄 핑크</strong>
+                    <p>깔끔하고 단정한 이미지를 위해 생머리에 머리띠를 이용해 스타일링하고 코랄 핑크 컬러가 피부톤을 더 화사하게 밝혀주는 헤어스타일</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger14 fancy-pop" rel="gallery_14">
+                    <div class="img"><img
+                            src="https://www.parkjun.com/park/data/file/trend/thumb-621919306_Fq9yEu2T_EBB095ECA480EBB7B0ED8BB0EB9EA9ECA480EC95A4EC9588ED8BB0_2016_FWEC8B9CECA68C_ED97A4EC96B4ED8AB8EBA08CEB939C_01_438x.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>레이어드컷 l 코랄 핑크</strong>
+                    <p>집게핀을 이용해 반묶음을 해 데이트와 어울리는 발랄한 분위기를 연출한 헤어스타일</p>
+                </div>
+            </li>
+
+
+            <li>
+                <a href="javascript:;" class="lite_box_trigger15 fancy-pop" rel="gallery_15">
+                    <div class="img"><img
+                            src="https://www.parkjun.com:443/park/data/file/style/thumb-747816649_xGoKIywk_7EC9B94_EC9B8CED81AC_2_675x.jpg"
+                            title=""></div>
+                </a>
+                <div class="cont">
+                    <p class="title"></p>
+                    <strong>레이어드컷 l 코랄 핑크</strong>
+                    <p>촉촉한 제형의 스타일링 제품을 사용하여 웨트한 질감을 표현해 색다른 분위기를 연출한 헤어스타일</p>
+                </div>
+            </li>
+        </ul>
+
+
+    </div>
+</div>
+</div>
+</body>
+
+<!--footer-->
+<div th:replace="~{footer :: footerNavbar}"></div>
+
+</html>

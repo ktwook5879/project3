@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+
+    <style>
+
+        .divBack{
+            margin-bottom: 30px;
+        }
+
+        #imgWon,
+        #imgBack{
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            margin-top: 10px
+        }
+
+        #imgWon{
+            margin-right: 30px;
+        }
+
+
+        #back {
+            background-color: white;
+            border-bottom: none;
+            margin-bottom: 30px;
+            margin-top:7px;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+
+        input {
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: 1px solid rgb(223, 224, 225);
+        }
+
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /*input  입력값*/
+        #treatName,
+        #treatAmount {
+            width: 95%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #treatTimeHour,
+        #treatTimeMinute {
+            width: 40%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: 10px;
+        }
+
+
+        #treatTimeHour option,
+        #treatTimeMinute option {
+            text-align: center;
+        }
+
+        .cateTime,
+        .cateName {
+            margin-bottom: 30px;
+        }
+
+        .catePrice {
+            /*display: flex;*/
+            -webkit-box-pack: justify;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            align-items: center;
+            /*position: relative;*/
+            margin-bottom: 30px;
+        }
+
+
+        .treatWrite {
+            border-radius: 8px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            box-shadow: #dad9d9 0px 3px 10px;
+            padding: 20px 20px 20px 24px;
+            width: 500px;
+            flex-direction: column;
+        }
+
+        #saveTreat{
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #bbb;
+            background-color: rgb(255, 255, 255);
+            padding : 10px 20px;
+            /*cursor: pointer;*/
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+
+
+            $("#saveTreat").on("click",function (){
+
+                const frm = document.treatForm;
+
+                // 입력여부 검사
+                if (!frm.treatName.value) {
+                    alert("시술 이름은 필수값입니다.");
+                    frm.treatName.focus();
+                    return false;
+                }
+
+                if (!frm.treatTimeHour.value) {
+                    alert("시술 시간은 필수값입니다,")
+                    return false;
+                }
+
+                if (!frm.treatTimeMinute.value) {
+                    alert("시술 시간은 필수값입니다,")
+                    return false;
+                }
+
+                if (!frm.treatAmount.value) {
+                    alert("시술 금액은 필수값입니다.");
+                    frm.treatAmount.focus();
+                    return false;
+                }
+
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="container treatWrite">
+        <div class="divBack">
+            <a href="/treat/treatList" >
+                <img src="/image/back.png" alt="back" id="imgBack">
+                <input id="back" type="button" value="돌아가기">
+            </a>
+        </div>
+        <form method="post" name="treatForm">
+
+            <div class="cateName">
+                <label>시술 이름</label>
+                <div size="8"></div>
+                <input id="treatName" name="treatName" type="text" required>
+            </div>
+            <div class="cateTime">
+                <label>시술 소요시간</label>
+                <div size="8"></div>
+
+                <select name="treatTimeHour" id="treatTimeHour" required>
+                    <option value="00">00</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                </select>
+                <span> 시간</span>
+
+                <select name="treatTimeMinute" id="treatTimeMinute" required>
+                    <option value="00">00</option>
+                    <option value="30">30</option>
+                </select>
+                <span> 분</span>
+
+            </div>
+            <div class="catePrice">
+                <label>시술 가격</label>
+                <div size="8"></div>
+                <input id="treatAmount" name="treatAmount" type="number" required>
+                <img src="/image/won.png" alt="won" id="imgWon">
+
+            </div>
+
+            <input type="hidden" th:attr="value=${gender}">
+
+            <div>
+                <button type="submit" id="saveTreat">저장하기</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

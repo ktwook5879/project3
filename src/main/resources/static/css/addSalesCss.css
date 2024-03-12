@@ -1,0 +1,383 @@
+
+.bar {
+    width: 5px;
+    height: 31px;
+    background-color: #37454a;
+    margin: 5px;
+    margin-right: 10px;
+}
+
+#addSales{
+    width: calc(100% - 350px);
+    margin-left:350px;
+}
+
+#salesCon{
+    width: calc(100% - 350px);
+    margin-left:350px;
+}
+
+
+#addSalesFrm .salesBox {
+    margin-top: 50px;
+    width: 1000px;
+}
+
+/*매출등록 시간 날짜 시작*/
+
+.dateAndTime {
+    display: flex;
+    margin-bottom: 30px;
+    justify-content: center;
+    align-items: center;
+}
+
+/*날짜 전체 div태그*/
+.dateAndTime .saleDate {
+    display: flex;
+    margin-right: 20px;
+}
+
+/*input태그*/
+#saleDate {
+    height: 30px;
+}
+
+/*시간 전체 div태그*/
+.dateAndTime .saleTime {
+    display: flex;
+    margin-right: 20px;
+}
+
+.saleTime .saleTimeHour,
+.saleTime .saleTimeMinute {
+    margin-right: 10px;
+
+}
+
+/*input태그*/
+#saleTimeHour, #saleTimeMinute {
+    height: 30px;
+    width: 50px;
+    text-align: center;
+}
+
+/*    매출등록 시간 날짜 끝*/
+
+/*    매출등록 고객명 시작*/
+.salesBoxCustom {
+    padding: 15px;
+    height: 60px;
+    display: flex;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    margin-bottom: 30px;
+    box-shadow: #dad9d9 0px 3px 3px;
+}
+
+.salesBoxCustom .title {
+    display: inline-block;
+    margin-right: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.salesBoxCustom .salesOurCustom {
+    margin-right: 20px;
+}
+
+.salesBoxCustom .salesOurCustom #userName{
+    border-bottom : 1px solid #a9a7a7;
+    border-top:none;
+    border-right: none;
+    border-left: none;
+    text-align: center;
+}
+
+.salesBoxCustom .salesCustom {
+    top: 2px;
+    position: relative;
+    z-index: 2;
+    /*width: 100%;*/
+    /*font-size: 18px;*/
+    /*border: 0;*/
+    /*padding: 0;*/
+
+}
+
+.salesBoxCustom .salesCustom label {
+    font-size: 13px;
+}
+
+/*modal창에서 회원 검색 후 받아온 데이터와 x 버튼 영역 시작*/
+.salesBoxCustom .salesUserValue {
+    display: none;
+    position: relative;
+    right: 60px;
+    z-index: 1;
+    /*visibility: hidden;*/
+}
+
+.salesBoxCustom .salesUserValue #modalUserValue {
+    width: 210px;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    padding-left: 5px;
+}
+
+.salesBoxCustom .salesUserValue #btnDelUser {
+    position: relative;
+    border: none;
+    background-color: white;
+    color: black;
+    right: 5px;
+}
+
+/*modal창에서 회원 검색 후 받아온 데이터와 x 버튼 영역 끝*/
+
+/*    매출등록 고객명 끝*/
+
+/* 매출등록 고객명 조회 modal 시작*/
+.salesBoxCustom .modal {
+    height: 100%;
+}
+
+.salesBoxCustom .modal .close{
+    background-color: white;
+    border: none;
+}
+
+.salesBoxCustom .modal .modal-body input {
+    width: 100%;
+}
+
+/* 매출등록 고객명 조회 modal 끝*/
+
+
+/*매출 등록 시술 선택 시작*/
+.salesBoxTreat {
+    padding: 15px;
+    height: 100%;
+    display: flex;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    box-shadow: #dad9d9 0px 3px 10px;
+    margin-bottom: 30px;
+    /*box-shadow: #dad9d9 0px 3px 3px;*/
+}
+
+.salesBoxTreat .salesBoxTreatDiv {
+    padding-bottom: 10px;
+    display: flex;
+}
+
+.salesBoxTreat thead {
+    border-bottom: 1px solid #bbb;
+}
+
+
+.salesBoxTreat .title {
+    display: inline-block;
+    margin-right: 20px;
+    font-size: 18px;
+}
+
+.salesBoxTreat #genderSelect,
+.salesBoxTreat #salesTreatList {
+    margin-right: 15px;
+}
+
+
+.salesBoxTreat .insideTable {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.salesBoxTreat .insideTable .column {
+    padding-top: 10px;
+}
+
+.salesBoxTreat .insideTable .remove,
+.salesBoxTreat .insideTable .gender,
+.salesBoxTreat .insideTable .name,
+.salesBoxTreat .insideTable .price{
+    /*table로 만든 td 데이터 % 값주고 가로 정렬*/
+    width: 25%;
+    text-align: center;
+}
+
+.salesBoxTreat .insideTable .price .treatPrice {
+    text-align: end;
+    width: 150px;
+    /*margin-right: 50px;*/
+    border:1px solid #a9a7a7;
+}
+
+/*매출 등록 시술 선택 끝*/
+
+/*    매출 등록 제품 선택 시작*/
+.salesBoxStock {
+    padding: 15px;
+    height: 100%;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    margin-bottom: 30px;
+    box-shadow: #dad9d9 0px 3px 3px;
+}
+
+.salesBoxStock .salesBoxStockDiv {
+    padding-bottom: 10px;
+    display: flex;
+}
+
+.salesBoxStock thead {
+    border-bottom: 1px solid #bbb;
+}
+
+.salesBoxStock .title {
+    display: inline-block;
+    margin-right: 20px;
+    font-size: 18px;
+}
+
+.salesBoxStock .insideTable {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.salesBoxStock .insideTable .column {
+    padding-top: 10px;
+}
+
+.salesBoxStock .insideTable .remove,
+.salesBoxStock .insideTable .name,
+.salesBoxStock .insideTable .count,
+.salesBoxStock .insideTable .price {
+    /*table로 만든 td 데이터 % 값주고 가로 정렬*/
+    width: 25%;
+    text-align: center;
+}
+
+.salesBoxStock .insideTable .price .stockPrice {
+    text-align: end;
+    width: 150px;
+    /*margin-right: 50px;*/
+    border:1px solid #a9a7a7;
+}
+
+/*    매출 등록 제품 선택 끝*/
+
+
+/*    최종결제 시작*/
+
+.salesBoxPayment {
+    padding: 15px;
+    height: 100%;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    margin-bottom: 30px;
+    box-shadow: #dad9d9 0px 3px 3px;
+}
+
+.salesBoxPayment .salesTable {
+    width: 100%;
+}
+
+.salesBoxPayment .salesBoxPaymentDiv {
+    display: flex;
+}
+
+.salesBoxPayment thead {
+    border-bottom: 1px solid #bbb;
+}
+
+.salesBoxPayment td {
+    padding-top: 20px;
+}
+
+.salesBoxPayment .title {
+    display: inline-block;
+    margin-right: 20px;
+    font-size: 18px;
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+.salesBoxPayment li {
+    list-style: none;
+}
+
+.salesBoxPayment .salesPaymentCash,
+.salesBoxPayment .salesPaymentCredit {
+    display: flex;
+    margin-bottom: 25px;
+    justify-content: space-between;
+}
+
+.salesBoxPayment .salesPaymentCash .checkPayment input[type="radio"],
+.salesBoxPayment .salesPaymentCredit .checkPayment input[type="radio"] {
+    margin-right: 15px;
+    margin-right: 15px;
+}
+
+.salesBoxPayment .salesPaymentCash .checkPayment label,
+.salesBoxPayment .salesPaymentCredit .checkPayment label {
+    font-size: 20px;
+}
+
+.salesBoxPayment .salesPaymentCash .pricePayment #salesCash,
+.salesBoxPayment .salesPaymentCredit .pricePayment #salesCredit {
+    text-align: end;
+    width: 150px;
+    /*margin-right: 50px;*/
+    border:1px solid #a9a7a7;
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+
+/*    최종 결제 끝*/
+
+/*메모*/
+
+.salesBoxMemo {
+    padding: 15px;
+    height: 100%;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    margin-bottom: 30px;
+    box-shadow: #dad9d9 0px 3px 3px;
+}
+
+.salesBoxMemo .title {
+    display: inline-block;
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+.salesBoxMemo #memo {
+    width: 100%;
+}
+
+/*    매출등록 버튼*/
+.btnSalesDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.btnSales {
+    width: 20%;
+    border-radius: 8px;
+    border: 1px solid;
+    background-color: #37454a;
+    color: white;
+    padding: 10px 20px;
+}

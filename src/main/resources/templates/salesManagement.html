@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>매출관리</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+    <style>
+
+        .bar {
+            width: 5px;
+            height: 31px;
+            background-color: #37454a;
+            margin: 5px;
+            margin-right: 10px;
+        }
+
+        #sales-container{
+            width: calc(100% - 350px);
+            margin-left:350px;
+        }
+
+        .salesDate #startDate,
+        .salesDate #endDate{
+            border: none;
+            font-size: 20px;
+            color: #a8a4a4;
+        }
+
+        .salesDate #search{
+            border: none;
+            font-size: 20px;
+            margin-left: 20px;
+            background-color: white;
+
+        }
+
+        .tab {
+            /*float: left;*/
+            width: auto;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .tabnav {
+            font-size: 0;
+            width: 600px;
+            /*border: 1px solid #ddd;*/
+        }
+
+        .tabnav li {
+            display: inline-block;
+            height: 46px;
+            text-align: center;
+            /*border-right: 1px solid #ddd;*/
+        }
+
+        .tabnav li a:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            /*top: 0px;*/
+            bottom: 0px;
+            width: 100%;
+            height: 3px;
+        }
+
+        .tabnav li a.active:before {
+            background: #000;
+        }
+
+        .tabnav li a.active {
+            border-bottom: 1px solid #fff;
+        }
+
+        .tabnav li a {
+            position: relative;
+            display: block;
+            /*background: #f8f8f8;*/
+            color: #000;
+            padding: 0 30px;
+            line-height: 46px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .tabnav li a:hover,
+        .tabnav li a.active {
+            background: #fff;
+            font-weight: bold;
+            /*color: #7ea21e;*/
+        }
+
+        .tab-content {
+            /*padding: 20px;*/
+            /*width: auto;*/
+            /*height: 244px;*/
+            /*border: 1px solid #ddd;*/
+            border-top: none;
+        }
+
+        /*매출 내역 현금,카드, 총매출액 합산 자료 시작*/
+        .tab-content .totalPurchaseList {
+            width: 80%;
+            border: 1px solid #dae6e8;
+            /*margin-left: auto;*/
+            /*margin-right: auto;*/
+            margin:70px auto 40px auto;
+        }
+
+        .tab-content .totalPurchaseList ul {
+            display: table;
+            width: 100%;
+
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+        }
+
+        .tab-content .totalPurchaseList ul li {
+            width: 33.3%;
+            display: table-cell;
+            /*background: #d2deb3;*/
+            /*border-right: 1px solid #dae6e8;*/
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .tab-content .totalPurchaseList ul li dt {
+            color: #121313;
+            font-size: 18px;
+            vertical-align: top;
+            margin-bottom: 10px;
+            display: block;
+
+        }
+
+        .tab-content .totalPurchaseList ul li dd {
+            width: 80%;
+            display: block;
+            margin: 0 auto;
+            padding: 15px 0;
+            background: #fff;
+            border: 1px solid #dae6e8;
+        }
+
+        .tab-content .totalPurchaseList ul li dd span {
+            color: #37454a;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        /*매출 내역 현금,카드, 총매출액 합산 자료 끝*/
+
+        .tab-content .table{
+            width: 80%;
+            height: auto;
+            text-align: center;
+            margin:20px auto auto auto;
+        }
+
+        .tab-content .table, tr, th, td {
+            horiz-align: center;
+        }
+
+    </style>
+
+    <script>
+        function formatNumberWithCommas(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function formatNumber(x) {
+            return Math.trunc(x).toLocaleString();
+        }
+
+        $(document).ready(function () {
+            let dataset = [];
+
+            function populateTable(data) {
+                var tableBody = $('#monthSaleList tbody');
+
+                // 기존 테이블 내용 삭제
+                tableBody.empty();
+
+                // 데이터를 테이블에 삽입
+                data.forEach(function (item) {
+                    var row = $('<tr>');
+                    row.append($('<td>').text(item[0])); // 01, 02 등
+                    row.append($('<td>').text(formatNumberWithCommas(item[1]))); // 현금 총액
+                    row.append($('<td>').text(formatNumberWithCommas(item[2])))// 카드 총액
+                    row.append($('<td>').text(formatNumberWithCommas(item[3]))); // 총 매출액
+                    row.append($('<td>').text(formatNumberWithCommas(item[4]))) // 일 평균 매출
+                    row.append($('<td>').text(formatNumberWithCommas(item[5]))) // 고객 수
+                    row.append($('<td>').text(formatNumber(item[6]))); // 고객 별 단가
+                    tableBody.append(row);
+
+                    dataset.push(item[3]);
+                });
+            }
+
+            // 매출관리 기간조회
+            // 조회기간 시작일
+            let sDate = new Date();
+            // 조회기간 종료일
+            let eDate = new Date();
+
+            // 조회기간 시작날짜는 오늘 날짜
+            sDate.setDate(sDate.getDate());
+
+            // 조회기간 종료 날짜는 오늘날짜 그대로
+            eDate.setDate(eDate.getDate());
+
+            // toISOString() 메서드는 ISO 표준을 사용하여 날짜 객체를 문자열로 반환
+            // 형식은 YYYY-MM-DDTHH:mm:ss.sssZ =>split을 통해 T기준으로 문자열 잘라 현재 날짜 가져옴
+            let minStr = sDate.toISOString().split('T')[0];
+            let maxStr = eDate.toISOString().split('T')[0];
+
+            document.getElementById("startDate").value = minStr;
+            document.getElementById("endDate").value = maxStr;
+
+            // 조회기간은 오늘 날짜 이후로 선택x 설정
+            document.getElementById("startDate").setAttribute("max", maxStr);
+            document.getElementById("endDate").setAttribute("max", maxStr);
+
+
+            // 시작일과 종료일을 오늘 날짜로 설정합니다.
+            let startDate = new Date().toISOString().split('T')[0];
+            let endDate = new Date().toISOString().split('T')[0];
+            let year = new Date(endDate).getFullYear();
+
+            // tab바 구현
+            $(".tab-content").hide();
+            $(".tab-content").eq(0).show();
+
+            $('.tabnav a').click(function () {
+                $('.tab-content > div').hide().filter(this.hash).fadeIn();
+                $('.tabnav a').removeClass('active');
+                $(this).addClass('active');
+                monthSaleData(year);
+                return false;
+            }).filter(':eq(0)').click();
+
+
+            // 페이지 로드 시 데이터를 불러옵니다.
+            loadData(startDate, endDate);
+            loadTotalData(startDate, endDate);
+
+            $("#search").click(function () {
+                startDate = $("#startDate").val();
+                endDate = $("#endDate").val();
+                loadData(startDate, endDate);
+                loadTotalData(startDate, endDate);
+            })
+
+            function loadData(startDate, endDate) {
+                $.ajax({
+                    url: "/sale/getCashAndCreditTotal",
+                    type: "GET",
+                    data: {
+                        startDate: startDate,
+                        endDate: endDate
+                    },
+                    success: function (data) {
+                        // 받은 데이터를 테이블에 표시
+                        updateTable(data);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error:", error);
+                    }
+                });
+            }
+
+
+            function monthSaleData(year) {
+
+                $.ajax({
+                    url: '/sale/monthly', // 월별 매출 정보를 반환하는 엔드포인트 URL
+                    type: 'GET',
+                    data: {year: year}, // 요청할 연도 (예시로 2024 사용)
+                    success: function (data) {
+                        // 데이터를 테이블에 삽입
+                        populateTable(data);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Failed to fetch data:', error);
+                    }
+                });
+            }
+
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['1월', '2월', '3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+                    datasets: [{
+                        label: '총액',
+                        data: dataset,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)', // 연파랑색
+                        borderColor: 'rgba(54, 162, 235, 1)', // 연파랑색
+                        borderWidth: 1,
+                        type: 'bar'
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            stacked: false,
+                            ticks: {
+                                stepSize: 100000, // y축 값의 간격 설정 (원하는 값으로 조정)
+                                callback: function (value, index, values) {
+                                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'; // y축 값에 '원' 추가
+                                }
+                            },
+                            max: 3000000 // y축 최대값 설정
+                        }
+                    }
+                }
+
+            });
+        });
+
+
+        function loadTotalData(startDate, endDate) {
+            $.ajax({
+                type: "GET",
+                url: "/sale/totals",
+                data: {startDate: startDate, endDate: endDate},
+                success: function (response) {
+                    $("#totalPurchaseList").empty();
+                    if (response.length > 0) {
+                        var creditTotal = response[0][0]; // First element
+                        var cashTotal = response[0][1]; // Second element
+                        var totalCash = response[0][2]; // Third element
+
+                        // 결과를 출력
+                        $("#totalPurchaseList").append('<ul>' +
+                            '<li><dt>현금</dt><dd><span id="cashTotal">' + (cashTotal ? formatNumberWithCommas(cashTotal) + '원' : '0원') + '</span></dd></li>' +
+                            '<li><dt>카드</dt><dd><span id="creditTotal">' + (creditTotal ? formatNumberWithCommas(creditTotal) + '원' : '0원') + '</span></dd></li>' +
+                            '<li><dt>총 매출액</dt><dd><span id="totalCash">' + (totalCash ? formatNumberWithCommas(totalCash) + '원' : '0원') + '</span></dd></li>' +
+                            '</ul>');
+                    } else {
+                        $("#totalPurchaseList").append('<p>조회된 결과가 없습니다.</p>');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+        }
+
+        function updateTable(data) {
+            // 테이블 내용 초기화
+            $("#dayTotalSale tbody").empty();
+
+            // 데이터가 없는 경우에는 각 셀에 0을 출력
+            if (!data || data.length === 0) {
+                $("#dayTotalSale tbody").append('<tr><td colspan="4">조회된 결과가 없습니다.</td></tr>');
+            } else {
+                // 데이터를 테이블에 추가
+                data.forEach(function (item) {
+                    var row = $("<tr>");
+                    var date = item[0] ? item[0] : '0';
+                    var cash = item[1] ? formatNumberWithCommas(item[1]) : '0';
+                    var card = item[2] ? formatNumberWithCommas(item[2]) : '0';
+                    var totalAmount = (item[1] && item[2]) ? formatNumberWithCommas(item[1] + item[2]) : '0';
+
+                    row.append($("<th>").text(date)); // 날짜
+                    row.append($("<td>").text(cash)); // 현금
+                    row.append($("<td>").text(card)); // 카드
+                    row.append($("<td>").text(totalAmount)); // 총금액
+
+                    $("#dayTotalSale tbody").append(row);
+                });
+            }
+        }
+
+    </script>
+</head>
+<body style="padding:30px;">  <!-- calendar 태그 -->
+
+<!--사이드 바 넣기-->
+<th:block th:replace="side :: sideFragment"></th:block>
+
+<!--    매출관리-->
+<!--    <div id='sales-container' class="col-6">-->
+<div class="container mt-5" id='sales-container'>
+
+    <div class="d-flex">
+        <span class="bar"></span>
+        <h2><strong>매출관리</strong></h2>
+    </div>
+
+    <div class="tab mt-5">
+        <ul class="tabnav">
+            <li><a href="#daySales">일간 매출</a></li>
+            <li><a href="#monthSales">월간 매출</a></li>
+        </ul>
+
+
+        <div class="tab-content" id="myTabContent">
+
+
+            <!--            일간 매출 내용-->
+            <div id="daySales">
+
+                <div class="col-sm salesDate">
+                    <div class="d-flex mt-4 mb-4" style="justify-content: end">
+                        <!--                <div style="margin-right: 10px; font-weight: bold">기간</div>-->
+                        <div>
+                            <input type="date" name="startDate" id="startDate">
+                        </div>
+                        <div class="tilde"
+                             style="margin-left: 10px; margin-right: 10px; font-weight: bold ; font-size: 20px;">~
+                        </div>
+                        <div>
+                            <input type="date" name="endDate" id="endDate">
+                        </div>
+
+                        <input type="button" value="조회" id="search">
+                    </div>
+                </div>
+
+                <div class="salesTotalView">
+                    <div class="totalPurchaseList" id="totalPurchaseList">
+                        <ul>
+                            <li>
+                                <dt>현금</dt>
+                                <dd><span>60,000원</span></dd>
+                            </li>
+                            <li>
+                                <dt>카드</dt>
+                                <dd><span>20,000원</span></dd>
+                            </li>
+                            <li>
+                                <dt>총 매출액</dt>
+                                <dd><span>80,000원</span></dd>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="row mt-5">
+                    <div class="col-sm">
+                        <table class="table" id="dayTotalSale">
+                            <thead style="border-bottom: 2px solid black">
+                            <tr>
+                                <th>날짜</th>
+                                <th>현금</th>
+                                <th>카드</th>
+                                <th>총 금액</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th>2024.03.07</th> <!--  날짜-->
+                                <td>30,000</td> <!--  시술-->
+                                <td>30,000원</td> <!--  결제금액-->
+                                <td>60,000원</td> <!--  현금-->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--                월간 매출 내용-->
+            <div id="monthSales">
+                <div class="row mt-5 justify-content-center">
+                    <canvas id="myChart" width="200" height="50" style="margin:50px"></canvas>
+                    <div class="col-sm">
+                        <table class="table" id="monthSaleList">
+                            <thead style="border-bottom: 1px solid black">
+                            <tr>
+                                <th scope="col">월</th>
+                                <th scope="col">현금</th>
+                                <th scope="col">카드</th>
+                                <th scope="col">총 매출액</th>
+                                <th scope="col">일 평균 매출</th>
+                                <th scope="col">고객수</th>
+                                <th scope="col">고객 별 단가</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th>3월</th> <!--  월-->
+                                <td>100,000원</td> <!--  현금-->
+                                <td>400,000원</td> <!--  카드-->
+                                <td>500,000원</td> <!--  총 매출액-->
+                                <td>16,129원</td> <!--  일 평균 매출-->
+                                <td>10명</td> <!--  고객수-->
+                                <td>50,000원</td> <!--  고객 별 단가-->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
